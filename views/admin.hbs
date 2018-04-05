@@ -1,0 +1,76 @@
+
+<section>
+    <div id="login" class="login-wrapper d-flex align-items-center">
+        <div class="container container-destinos">
+            <div class="row d-flex justify-content-center row-contact">
+                <div class="col-12 admin-destinos">
+                    <div class="contact-message">
+                        <h3 class="text-white"><i class="mb-4 material-icons mi-center text-white">account_circle</i> DESTINOS</h3>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Country</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Activo</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {{#if destinos}}
+                            {{#each destinos}}
+                                <tr>
+                                    <td>{{id}}</></td>
+                                    <td>{{country}}</td>
+                                    <td>{{city}}</td>
+                                    <td>{{price}}</td>
+                                    <td>{{image}}</td>
+                                    <td>{{type}}</td>
+                                    <td>{{description}}</td>
+                                    <td class="text-center">
+                                        <input class="active-destinos" type="checkbox" onclick='window.location.assign("/active/:{{id}}")'
+                                               {{#if active}}checked{{/if}} {{active}}>
+                                    </td>
+                                    <td>
+                                        <a class="edit-td btn btn-outline-light" href="/admin/delete/:{{id}}">Eliminar</a>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+
+                        </tbody>
+                    </table>
+                    <div id="newDestinyForm" style="display:none" class="add-destino">
+                        <div class="contact-message d-flex justify-content-between">
+                            <h3 class="text-white"><i class="material-icons mi-center text-white">account_circle</i> NEW DESTINY</h3>
+                            <button id="newDestinyClose" type="button" class="d-flex m-1 btn btn-outline-light"><i class="material-icons">clear</i></button>
+                        </div>
+                        <form class="mt-2" method="post" action="/admin/add">
+                            <div class="form-row">
+                                <div class="d-flex align-items-center">
+                                    <input name="city" type="text" class="m-1 form-control" id="login-name" placeholder="City">
+                                    <input name="country" type="text" class="m-1 form-control" id="login-name" placeholder="Country">
+                                    <input name="price" type="text" class="m-1 form-control" id="login-name" placeholder="Price">
+                                    <input name="image" type="text" class="m-1 form-control" id="login-name" placeholder="Image">
+                                    <input name="type" type="text" class="m-1 form-control" id="login-name" placeholder="Type">
+                                    <input name="description" type="text" class="m-1 form-control" id="login-name" placeholder="Description">
+                                    <input name="active" type="checkbox" class="col-1 m-1 h-50" id="login-name" placeholder="Active">
+                                    <button type="submit" class="m-1 btn btn-primary">Añadir</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button id="newDestinyButton" type="button" class="m-1 btn btn-login">Add New Destiny</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,48 @@
+
+<section>
+    <div id="login" class="login-wrapper d-flex align-items-center">
+        <div class="container container-destinos">
+            <div class="row d-flex justify-content-center row-contact">
+                <div class="col-8 form-login">
+                    <div class="contact-message">
+                        <h3><i class="material-icons mi-center">account_circle</i> USERS</h3>
+                    </div>
+                    <hr>
+                    {{#if data.length}}
+                        {{#each data}}
+                            <h1>{{usuario}}, {{email}}</h1>
+                        {{/each}}
+                        {{#each data}}
+                            <h1>{{usuario}}, {{email}}</h1>
+                        {{/each}}
+                        {{#each data}}
+                            <h1>{{usuario}}, {{email}}</h1>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    Introduce tu correo electrónico
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12">
+                    <input type="password" class="form-control" id="login-recovery" placeholder="Correo Electrónico">
+                    <button type="button" class="btn btn-primary">Recuperar contraseña</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

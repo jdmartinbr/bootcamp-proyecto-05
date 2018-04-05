@@ -1,0 +1,8 @@
+.idea
+/node_modules
+/public/components
+/public/data
+package-lock.json
+npm-debug.log.2209180177
+ubuntu-xenial-16.04-cloudimg-console.log
+/.vagrant

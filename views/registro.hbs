@@ -1,0 +1,52 @@
+
+<section>
+    <div id="login" class="login-wrapper d-flex align-items-center">
+        <div class="container container-destinos">
+            <div class="row d-flex justify-content-center row-contact">
+                <div class="col-8 form-login">
+                    <div class="contact-message">
+                        <h3><i class="material-icons">assignment</i> REGISTRO</h3>
+                    </div>
+                    <hr>
+                    {{#if errorUsuario}}
+                        <div class="alert alert-warning">
+                            <p>Error Usuario</p>
+                        </div>
+                    {{/if}}
+                    {{#if errorEmail}}
+                        <div class="alert alert-warning">
+                            <p>Error Email</p>
+                        </div>
+                    {{/if}}
+                    <form method="post" action="/register">
+                        <div class="mt-5 form-row">
+
+                            <div class="col-12 offset-md-2 col-md-8 form-group">
+                                <input name="usuario" type="text" class="form-control" id="inputuser" placeholder="Usuario*" required>
+                            </div>
+                            <div class="col-12 offset-md-2 col-md-8 form-group">
+                                <input name="email" type="email" class="form-control" id="inputemail" placeholder="Correo Electrónico*" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 offset-md-2 col-md-8 form-group">
+                                <input name="password" type="password" class="form-control" id="inputPassword1" minlength="6" placeholder="Contraseña*"required>
+                            </div>
+                            <div class="col-12 offset-md-2 col-md-8 form-group">
+                                <div id="#passCheck">
+                                    <input name="password_sec" type="password" class="form-control" id="inputPassword2" placeholder="Contraseña*"required>
+                                </div>
+                            </div>
+                            <div class="col-12 offset-md-2 col-md-8 form-group">
+                                <input type="checkbox" id="checkb">
+                                <label>Acepto los terminos y condiciones</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-custom btn-contact disabled col-12 offset-md-2 col-md-8 mb-3" id="regbutton" disabled="disabled" >Registrarme</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
