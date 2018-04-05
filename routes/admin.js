@@ -8,12 +8,6 @@ let winston = require('../config/winston');
 
 /* GET users listing. */
 
-
-router.get('/', function (req, res, next) {
-    winston.error('error de winston');
-    res.status(200).json(req.session || 'La sesion no se ha creado');
-});
-
 router.get('/create', function (req, res, next) {
     req.session.username = 'juandiego';
     req.session.isAdmin = 1;
@@ -50,95 +44,60 @@ router.get('/flashcreate', function(req, res, next){
     res.redirect('/admin/flashrecieve')
 });
 
-router.get('/panel', function (req, res) {
-    usersModel.getDestinos(function (err, dest) {
+router.get('/', function(req, res, next) {
+    if (req.session.username) {
+        usersModel.getDestinos(function (err, dest) {
+           if (err) return res.status(500).json(err);
+           destinos = dest;
+              res.render('admin', {
+                  title: 'Geekshubs Travell',
+                  layout: 'template',
+                  destinos: destinos
+              })
+        });
+    } else {
+        res.redirect('/login')
+    }
+});
+
+router.get('/delete/:id', function(req, res, next) {
+    let reqId = req.params.id;
+    let destino = reqId.substr(1);
+    usersModel.deleteDestino(destino, function (err, dest) {
+       if (err) return res.status(500).json(err);
+       destinos = dest;
+          res.redirect('/admin');
+    });
+});
+
+router.get('/active/:id', function(req, res, next) {
+    let reqId = req.params.id;
+    let destino = reqId.substr(1);
+    usersModel.updateActive(destino, function (err, dest) {
         if (err) return res.status(500).json(err);
         destinos = dest;
-        res.render('admin', {
-            title: 'Geekshubs Travell',
-            layout: 'template',
-            destinos: destinos
-        })
+        res.redirect('/admin');
     });
 });
 
-router.get('/login', function(req, res){
-    res.render('login.hbs', {
-        layout: 'template'
-    });
-});
-
-router.get('/register', function(req, res){
-    res.render('registro.hbs', {
-        layout: 'template'
-    });
-});
-
-router.post('/login', function (req, res) {
-    let user = {
-        usuario_login: req.body.usuario,
-        password_login: req.body.password
+router.post('/admin/add', function(req, res, next) {
+    let active = 0;
+    if (req.body.active == 'on'){
+        active = 1;
+    }
+    let destino = {
+        city: req.body.city,
+        country: req.body.country,
+        price: req.body.price,
+        image: req.body.image,
+        type: req.body.type,
+        description: req.body.description,
+        active: active
     };
-    usersModel.login(user, function (err, data) {
+    console.log(destino);
+    usersModel.addDestiny(destino, function (err, dest) {
         if (err) return res.status(500).json(err);
-        switch (data){
-            case 1:
-                res.render('login', {
-                    title: 'Login',
-                    layout: 'template',
-                    errorUsuario:true
-                });
-                break;
-            case 2:
-                res.render('login', {
-                    title: 'login',
-                    layout: 'template',
-                    errorPassword:true
-                });
-                break;
-            case 3:
-                req.session.user = user;
-                console.log(req.session.user);
-                res.redirect('/admin/panel');
-                break;
-        }
-    });
-});
-
-router.post('/register', function(req, res){
-    let hash = bcrypt.hashSync(req.body.password_sec);
-    let user = {
-        usuario: req.body.usuario,
-        email: req.body.email,
-        password: req.body.password_sec,
-        hash: hash
-    };
-    usersModel.register(user, function (err, data) {
-        if (err) return res.status(500).json(err);
-        switch (data){
-            case 1:
-                res.render('registro', {
-                    title: 'Registro',
-                    layout: 'template',
-                    errorUsuario:true
-                });
-                break;
-            case 2:
-                res.render('registro', {
-                    title: 'Registro',
-                    layout: 'template',
-                    errorEmail:true
-                });
-                break;
-            case 3:
-                res.render('login', {
-                    title: 'Registro',
-                    layout: 'template',
-                    register: true
-                });
-                break;
-
-        }
+        res.redirect('/admin');
     });
 });
 

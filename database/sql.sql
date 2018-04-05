@@ -1,10 +1,11 @@
 create database travel_agency charset latin1 collate latin1_spanish_ci;
 use travel_agency;
-create table users (id int auto_increment not null, usuario varchar(45) not null, email varchar(45) not null, password varchar(80) not null, hash varchar(80), primary key(id));  
-create table destinos (id int auto_increment not null, city varchar(45) not null, country varchar(45) not null, price float(8) not null, image varchar(45) not null, type varchar(20) not null, description varchar(45) not null, primary key(id));
+create table users (id int auto_increment not null, usuario varchar(45) not null, email varchar(45) not null, password varchar(80) not null, hash varchar(80), isAdmin int(1) not null default 0, primary key(id));
+create table destinos (id int auto_increment not null, city varchar(45) not null, country varchar(45) not null, price float(8) not null, image varchar(45) not null, type varchar(20) not null, description varchar(45) not null, active int(1) not null default 1, primary key(id));
 insert into destinos (city, country, price, image, type, description) values ('París', 'Francia', 250, '../images/paris.jpg', 'Romántico', 'Escapada romántica');
 insert into destinos (city, country, price, image, type, description) values ('Washington', 'EE.UU.', 1150, '../images/washington.jpg', 'Histórico', 'Disfruta de un pais increíble.');
 insert into destinos (city, country, price, image, type, description) values ('Waterford', 'Irlanda', 450, '../images/irlanda.jpg', 'Naturaleza', 'Unas vistas inolvidables.');
 insert into destinos (city, country, price, image, type, description) values ('Pekín', 'China', 1650, '../images/pekin.jpg', 'Aventurero', 'Un destino milenario.');
 insert into destinos (city, country, price, image, type, description) values ('Agra', 'India', 500, '../images/india.jpg', 'Rincones insólitos', 'Descubre una nueva cultura.');
 insert into destinos (city, country, price, image, type, description) values ('Cartagena', 'Colombia', 650, '../images/cartagena.jpg', 'Histórico', 'Un lugar con mucho color.');
+insert into users (usuario, email, password, hash, isAdmin) values ('admin', 'admin@admin.com', 111111, '$2a$10$457aSHekkKcu3J.8DYdlqepsvWJVPylIsLqFyt6tokNpV8EtBVJl.', 1);
