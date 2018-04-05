@@ -83,7 +83,11 @@
     </div>
 </section>
 
-<section class="hidden-resp">
+{{#if admin}}
+    <h1>Eres admin</h1>
+{{/if}}
+
+<section id="destinos" class="hidden-resp">
     <div class="wrapper">
         <div class="container container-destinos">
             <div class="row d-flex destinos-items">

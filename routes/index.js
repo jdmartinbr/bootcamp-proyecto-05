@@ -8,11 +8,21 @@ router.get('/', function(req, res, next) {
     usersModel.getDestinos(function (err, dest) {
        if (err) return res.status(500).json(err);
        destinos = dest;
-          res.render('main.hbs', {
-              title: 'Geekshubs Travell',
-              layout: 'template',
-              destinos: destinos
-          })
+       let login = false;
+       let admin = false;
+       if (req.session.username) {
+           login = true;
+           if(req.session.isAdmin === 1){
+               admin = true;
+           }
+       }
+      res.render('main.hbs', {
+          title: 'Geekshubs Travell',
+          layout: 'template',
+          login: login,
+          admin: admin,
+          destinos: destinos
+      })
     });
 });
 
@@ -72,9 +82,9 @@ router.post('/login', function (req, res) {
         usuario_login: req.body.usuario,
         password_login: req.body.password
     };
-    usersModel.login(user, function (err, data) {
+    usersModel.login(user, function (err, data, options) {
         if (err) return res.status(500).json(err);
-        switch (data){
+        switch (options){
             case 1:
                 res.render('login', {
                     title: 'Login',
@@ -90,15 +100,10 @@ router.post('/login', function (req, res) {
                 });
                 break;
             case 3:
-                req.session.username = user.usuario_login;
+                console.log(data);
+                req.session.username = data.usuario;
+                req.session.isAdmin = data.isAdmin;
                 res.redirect('/admin');
-                // res.render('main', {
-                //     title: 'Geekshubs Travell',
-                //     layout: 'template',
-                //     logged: true,
-                //     destinos: destinos,
-                //     user
-                // });
                 break;
         }
     });

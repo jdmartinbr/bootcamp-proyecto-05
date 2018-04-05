@@ -44,6 +44,7 @@ router.get('/flashcreate', function(req, res, next){
     res.redirect('/admin/flashrecieve')
 });
 
+
 router.get('/', function(req, res, next) {
     if (req.session.username) {
         usersModel.getDestinos(function (err, dest) {
@@ -80,7 +81,7 @@ router.get('/active/:id', function(req, res, next) {
     });
 });
 
-router.post('/admin/add', function(req, res, next) {
+router.post('/add', function(req, res, next) {
     let active = 0;
     if (req.body.active == 'on'){
         active = 1;

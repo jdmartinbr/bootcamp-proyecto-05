@@ -28,14 +28,18 @@ users.login = function (user, cb) {
   if(!connection) return cb('No se ha podido crear la conexion');
   connection.query('SELECT * FROM users WHERE usuario=?', user.usuario_login, function(err1, res1) {
       if (err1) return cb(err1);
+      let userDB = {
+          usuario: res1[0].usuario,
+          isAdmin: res1[0].isAdmin
+      };
       if(res1 == "") {
-          return cb(null, 1)
+          return cb(null, null, 1)
         } else {
           bcrypt.compare(user.password_login, res1[0].hash, function(err, comp) {
               if (!comp) {
-                  return cb(null, 2)
+                  return cb(null, null, 2)
               } else {
-                  return cb(null, 3)
+                  return cb(null, userDB, 3)
               }
           });
       }
