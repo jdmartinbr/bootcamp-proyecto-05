@@ -1,70 +1,32 @@
 let express = require('express');
 let router = express.Router();
 let bcrypt = require('bcrypt-nodejs');
-//let passport = require('passport');
-let usersModel = require('../models/usersModels');
+let destinationsModel = require('../models/destinationsModels');
 let winston = require('../config/winston');
-
+let checkAccessUser = require('../middelwares/sessionSegurity');
 
 /* GET users listing. */
 
-router.get('/create', function (req, res, next) {
-    req.session.username = 'juandiego';
-    req.session.isAdmin = 1;
-    res.redirect('/admin')
-});
-
-router.get('/remove', function (req, res, next) {
-   req.session.username = null;
-   res.redirect('/admin');
-});
-
-router.get('/destroy', function (req, res, next) {
-   req.session.destroy();
-   res.redirect('/admin');
-});
-
-router.get('/privada', function (req, res, next) {
-   if (req.session.isAdmin) {
-    res.send('Has entrado');
-   } else {
-       res.redirect('/admin')
-   }
-});
-
-router.get('/flashrecieve', function(req, res){
-    res.render('login.hbs', {
-         layout: 'template',
-         messages: req.flash('info')
+router.get('/', checkAccessUser, function(req, res, next) {
+    destinationsModel.getDestinos(function (err, destinos) {
+        if (err) return res.status(500).json(err);
+        if (req.isAdmin) {
+            res.render('admin', {
+                title: 'Geekshubs Travell',
+                layout: 'template',
+                isAdmin: req.isAdmin,
+                isUser: req.isUser,
+                destinos
+            })
+        } else {
+            res.redirect('/')
+        }
     });
-});
-
-router.get('/flashcreate', function(req, res, next){
-    req.flash('info', 'Sesion flash creada');
-    res.redirect('/admin/flashrecieve')
-});
-
-
-router.get('/', function(req, res, next) {
-    if (req.session.username) {
-        usersModel.getDestinos(function (err, dest) {
-           if (err) return res.status(500).json(err);
-           destinos = dest;
-              res.render('admin', {
-                  title: 'Geekshubs Travell',
-                  layout: 'template',
-                  destinos: destinos
-              })
-        });
-    } else {
-        res.redirect('/login')
-    }
 });
 
 router.get('/delete/:id', function(req, res, next) {
     let reqId = req.params.id;
-    let destino = reqId.substr(1);
-    usersModel.deleteDestino(destino, function (err, dest) {
+    destinationsModel.deleteDestino(reqId, function (err, dest) {
        if (err) return res.status(500).json(err);
        destinos = dest;
           res.redirect('/admin');
@@ -74,7 +36,7 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/active/:id', function(req, res, next) {
     let reqId = req.params.id;
     let destino = reqId.substr(1);
-    usersModel.updateActive(destino, function (err, dest) {
+    destinationsModel.updateActive(destino, function (err, dest) {
         if (err) return res.status(500).json(err);
         destinos = dest;
         res.redirect('/admin');
@@ -95,32 +57,23 @@ router.post('/add', function(req, res, next) {
         description: req.body.description,
         active: active
     };
-    console.log(destino);
-    usersModel.addDestiny(destino, function (err, dest) {
+    destinationsModel.addDestiny(destino, function (err, dest) {
         if (err) return res.status(500).json(err);
         res.redirect('/admin');
     });
 });
 
-// router.post('/login', passport.authenticate('local', {
-//     failureRedirect: '/registro',
-//     failureFlash : true
-//     }),
-//     function (req, res) {
-//         res.render('login', {
-//            layout: 'template',
-//             isAuthenticated: req.isAuthenticated(),
-//             user: req.user
-//         });
-//     }
-// );
+router.get('/flashrecieve', function(req, res){
+    res.render('login.hbs', {
+         layout: 'template',
+         messages: req.flash('info')
+    });
+});
 
-// function checkSignIn(req, res) {
-//     if(req.session.user){
-//         next();
-//     } else {
-//         let err = new Error('Not logged in');
-//         next(err);
-//     }
-// }
+router.get('/flashcreate', function(req, res, next){
+    req.flash('info', 'Sesion flash creada');
+    res.redirect('/admin/flashrecieve')
+});
+
+
 module.exports = router;

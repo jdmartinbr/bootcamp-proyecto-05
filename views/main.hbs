@@ -83,8 +83,10 @@
     </div>
 </section>
 
-{{#if admin}}
-    <h1>Eres admin</h1>
+{{# if isAdmin}}
+    <h1>eres admin</h1>
+    {{else if isUser}}
+    <h1>eres user</h1>
 {{/if}}
 
 <section id="destinos" class="hidden-resp">

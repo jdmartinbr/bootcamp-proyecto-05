@@ -34,11 +34,11 @@
                                     <td>{{type}}</td>
                                     <td>{{description}}</td>
                                     <td class="text-center">
-                                        <input class="active-destinos" type="checkbox" onclick='window.location.assign("/admin/active/:{{id}}")'
-                                               {{#if active}}checked{{/if}} {{active}}>
+                                        <input class="active-destinos" type="checkbox" onclick='window.location.assign("/admin/active/{{id}}")'
+                                               {{#if active}}checked{{/if}}>
                                     </td>
                                     <td>
-                                        <a class="edit-td btn btn-outline-light" href="/admin/delete/:{{id}}">Eliminar</a>
+                                        <a class="edit-td btn btn-outline-light" href="/admin/delete/{{id}}">Eliminar</a>
                                     </td>
                                 </tr>
                             {{/each}}

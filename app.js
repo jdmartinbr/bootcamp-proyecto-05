@@ -6,25 +6,13 @@ var logger = require('morgan');
 var session = require('express-session');
 var flash = require('connect-flash');
 var winston = require('./config/winston');
-//var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 
 var app = express();
 
-//require('./passport/passport')(passport);
-//app.use(passport.initialize());
-//app.use(passport.session());
-
-// hbs
-
-var hbs = require('hbs');
-hbs.registerPartials(`${__dirname}/views/partials`);
-var hbsUtils = require('hbs-utils')(hbs);
-hbsUtils.registerWatchedPartials(`${__dirname}/views/partials`);
-
-// sessions
+// Sessions
 
 app.use(flash());
 app.use(session({
@@ -33,6 +21,13 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+// HBS Engine
+
+var hbs = require('hbs');
+hbs.registerPartials(`${__dirname}/views/partials`);
+var hbsUtils = require('hbs-utils')(hbs);
+hbsUtils.registerWatchedPartials(`${__dirname}/views/partials`);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

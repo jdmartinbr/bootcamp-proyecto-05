@@ -2,25 +2,24 @@ let express = require('express');
 let router = express.Router();
 let bcrypt = require('bcrypt-nodejs');
 let usersModel = require('../models/usersModels');
+let destinationsModel = require('../models/destinationsModels');
+let usersController = require('../controllers/userController');
+let checkAccessUser = require('../middelwares/sessionSegurity');
 let destinos = [];
 
-router.get('/', function(req, res, next) {
-    usersModel.getDestinos(function (err, dest) {
+router.get('/', checkAccessUser, function(req, res, next) {
+    console.log(req.isUser);
+    console.log(req.isAdmin);
+    let isUser = false;
+    let isAdmin = false;
+    destinationsModel.getDestinos(function (err, dest) {
        if (err) return res.status(500).json(err);
        destinos = dest;
-       let login = false;
-       let admin = false;
-       if (req.session.username) {
-           login = true;
-           if(req.session.isAdmin === 1){
-               admin = true;
-           }
-       }
       res.render('main.hbs', {
           title: 'Geekshubs Travell',
           layout: 'template',
-          login: login,
-          admin: admin,
+          isAdmin: req.isAdmin,
+          isUser: req.isUser,
           destinos: destinos
       })
     });
@@ -78,35 +77,20 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function (req, res) {
-    let user = {
-        usuario_login: req.body.usuario,
-        password_login: req.body.password
-    };
-    usersModel.login(user, function (err, data, options) {
-        if (err) return res.status(500).json(err);
-        switch (options){
-            case 1:
-                res.render('login', {
-                    title: 'Login',
-                    layout: 'template',
-                    errorUsuario:true
-                });
-                break;
-            case 2:
-                res.render('login', {
-                    title: 'login',
-                    layout: 'template',
-                    errorPassword:true
-                });
-                break;
-            case 3:
-                console.log(data);
-                req.session.username = data.usuario;
-                req.session.isAdmin = data.isAdmin;
-                res.redirect('/admin');
-                break;
-        }
-    });
+    usersController.login2(req, res)
+    // let user = {
+    //     usuario_login: req.body.usuario,
+    //     password_login: req.body.password
+    // };
+    // usersModel.login(user, function (err, data, options) {
+    //     if (err) return res.status(500).json(err);
+    //     usersController.login(req, res, data, options)
+    // });
+});
+
+router.get('/logout', function (req, res, next) {
+    req.session.destroy();
+    res.redirect('/login');
 });
 
 module.exports = router;
