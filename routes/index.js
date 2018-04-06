@@ -78,14 +78,6 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function (req, res) {
     usersController.login2(req, res)
-    // let user = {
-    //     usuario_login: req.body.usuario,
-    //     password_login: req.body.password
-    // };
-    // usersModel.login(user, function (err, data, options) {
-    //     if (err) return res.status(500).json(err);
-    //     usersController.login(req, res, data, options)
-    // });
 });
 
 router.get('/logout', function (req, res, next) {

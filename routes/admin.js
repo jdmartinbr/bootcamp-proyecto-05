@@ -35,8 +35,7 @@ router.get('/delete/:id', function(req, res, next) {
 
 router.get('/active/:id', function(req, res, next) {
     let reqId = req.params.id;
-    let destino = reqId.substr(1);
-    destinationsModel.updateActive(destino, function (err, dest) {
+    destinationsModel.updateActive(reqId, function (err, dest) {
         if (err) return res.status(500).json(err);
         destinos = dest;
         res.redirect('/admin');
