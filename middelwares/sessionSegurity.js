@@ -1,12 +1,11 @@
 
 function checkAccessUser(req, res, next) {
-    console.log(req.session);
     if(req.session.isAdmin){
-        req.isUser = true;
+        req.isUser = req.session.username;
         req.isAdmin = true;
         next();
     } else if (req.session.username){
-        req.isUser = true;
+        req.isUser = req.session.username;
         req.isAdmin = false;
         next();
     } else {

@@ -1,3 +1,4 @@
+'strict mode'
 let appRoot = require('app-root-path');
 let winston = require('winston');
 let options = {

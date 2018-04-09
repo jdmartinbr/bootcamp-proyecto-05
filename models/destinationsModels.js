@@ -14,7 +14,6 @@ destinations.getDestinos = function (cb) {
 destinations.deleteDestino = function (id, cb) {
   if(!connection) return cb('No se ha podido crear la conexion');
   connection.query('DELETE FROM destinos WHERE id=?', id, function(err, deleted) {
-      console.log(deleted);
       if (err) return cb(err);
       if (deleted){
           return cb (null, null);
@@ -25,7 +24,6 @@ destinations.deleteDestino = function (id, cb) {
 destinations.updateActive = function (id, cb) {
   if(!connection) return cb('No se ha podido crear la conexion');
   connection.query('SELECT * FROM destinos WHERE id=?', id, function(err, destino) {
-      console.log(destino);
       if (err) return cb(err);
       let activeStatus = destino[0].active;
       let newStatus = !activeStatus;
@@ -35,10 +33,17 @@ destinations.updateActive = function (id, cb) {
   });
 };
 
-destinations.addDestiny = function (destiny, cb) {
+destinations.editDestination = function (destination, id, cb) {
   if(!connection) return cb('No se ha podido crear la conexion');
-    connection.query('INSERT INTO destinos SET ?', destiny, function (err, result) {
-        console.log(err);
+  connection.query('UPDATE destinos SET ? where id=?', [destination, id], function(err, toUptade) {
+      if (err) return cb(err);
+      return cb (null, toUptade);
+  });
+};
+
+destinations.addDestination = function (destination, cb) {
+  if(!connection) return cb('No se ha podido crear la conexion');
+    connection.query('INSERT INTO destinos SET ?', destination, function (err, result) {
         if (err) return cb(err);
         return cb(null, true)
     });

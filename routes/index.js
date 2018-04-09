@@ -5,16 +5,10 @@ let usersModel = require('../models/usersModels');
 let destinationsModel = require('../models/destinationsModels');
 let usersController = require('../controllers/userController');
 let checkAccessUser = require('../middelwares/sessionSegurity');
-let destinos = [];
 
 router.get('/', checkAccessUser, function(req, res, next) {
-    console.log(req.isUser);
-    console.log(req.isAdmin);
-    let isUser = false;
-    let isAdmin = false;
-    destinationsModel.getDestinos(function (err, dest) {
+    destinationsModel.getDestinos(function (err, destinos) {
        if (err) return res.status(500).json(err);
-       destinos = dest;
       res.render('main.hbs', {
           title: 'Geekshubs Travell',
           layout: 'template',
@@ -25,10 +19,18 @@ router.get('/', checkAccessUser, function(req, res, next) {
     });
 });
 
+router.get('/a', function (req, res, next) {
+    let a = req.session;
+    res.send(a);
+});
+
 router.get('/registro', function(req, res, next) {
+  if (req.session.username) {
+    next(err);
+  }
   res.render('registro.hbs', {
-        title: 'Registro',
-        layout: 'template',
+    title: 'Registro',
+    layout: 'template',
   })
 });
 
@@ -70,6 +72,9 @@ router.post('/registro', function(req, res){
 });
 
 router.get('/login', function(req, res, next) {
+    if (req.session.username) {
+        next(err);
+    }
     res.render('login.hbs', {
         title: 'Login',
         layout: 'template'
@@ -77,7 +82,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function (req, res) {
-    usersController.login2(req, res)
+    usersController.login(req, res)
 });
 
 router.get('/logout', function (req, res, next) {

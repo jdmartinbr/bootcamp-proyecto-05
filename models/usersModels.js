@@ -28,7 +28,6 @@ users.login = function (user, cb) {
   if(!connection) return cb('No se ha podido crear la conexion');
   connection.query('SELECT * FROM users WHERE usuario=?', user.usuario_login, function(err1, res1) {
       if (err1) return cb(err1);
-      console.log(res1);
       if(res1 == "") {
           return cb(null, null, 1)
         } else {

@@ -10,7 +10,7 @@ let checkAccessUser = require('../middelwares/sessionSegurity');
 router.get('/', checkAccessUser, function(req, res, next) {
     destinationsModel.getDestinos(function (err, destinos) {
         if (err) return res.status(500).json(err);
-        if (req.isAdmin) {
+        if (req.session.isAdmin) {
             res.render('admin', {
                 title: 'Geekshubs Travell',
                 layout: 'template',
@@ -42,21 +42,34 @@ router.get('/active/:id', function(req, res, next) {
     });
 });
 
-router.post('/add', function(req, res, next) {
-    let active = 0;
-    if (req.body.active == 'on'){
-        active = 1;
-    }
-    let destino = {
+router.post('/edit', function(req, res, next) {
+    let destination = {
         city: req.body.city,
         country: req.body.country,
         price: req.body.price,
         image: req.body.image,
         type: req.body.type,
         description: req.body.description,
-        active: active
+        active: req.body.active - 1 ,
     };
-    destinationsModel.addDestiny(destino, function (err, dest) {
+    let id = req.body.id;
+    destinationsModel.editDestination(destination, id, function (err, row) {
+        if (err) return res.status(500).json(err);
+        res.redirect('/admin');
+    });
+});
+
+router.post('/add', function(req, res, next) {
+    let destination = {
+        city: req.body.city,
+        country: req.body.country,
+        price: req.body.price,
+        image: req.body.image,
+        type: req.body.type,
+        description: req.body.description,
+        active: req.body.active
+    };
+    destinationsModel.addDestination(destination, function (err, dest) {
         if (err) return res.status(500).json(err);
         res.redirect('/admin');
     });
@@ -73,6 +86,7 @@ router.get('/flashcreate', function(req, res, next){
     req.flash('info', 'Sesion flash creada');
     res.redirect('/admin/flashrecieve')
 });
+
 
 
 module.exports = router;
