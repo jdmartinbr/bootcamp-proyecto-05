@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    $('.cbActive').click(function(e){
+        e.preventDefault();
+    });
+
     $(window).on('scroll', function () {
         if($(window).scrollTop()===0 && $("#menu-toggler").attr("aria-expanded")===true) {
             $('nav').removeClass('nav-scroll');
@@ -58,13 +62,13 @@ $(document).ready(function () {
 
     $('#newDestinyButton').click(function () {
         //$('#newDestinyForm').fadeIn(2000);
-        $('#newDestinyForm').slideToggle(2000);
-        $('#newDestinyButton').delay(2000).slideToggle(1000);
+        $('#newDestinyForm').delay(1000).slideToggle(2000);
+        $('#newDestinyButton').fadeOut(1000);
     });
 
     $('#newDestinyClose').click(function () {
        $('#newDestinyForm').slideToggle(2000);
-       $('#newDestinyButton').delay(2000).slideToggle(1000);
+       $('#newDestinyButton').delay(2000).fadeIn(1000);
     });
 
 });

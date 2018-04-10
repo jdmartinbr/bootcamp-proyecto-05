@@ -683,7 +683,7 @@ footer ul {
 
 .btn-primary {
   margin-top: 0.5em;
-  width: 50%;
+  /*width: 50%;*/
   float: left;
 }
 
@@ -758,6 +758,29 @@ footer ul {
   border: 1px solid white;
   padding: 2em;
 }
+
+.table-container {
+  max-height: 50vh;
+  overflow: scroll;
+}
+
+.btn-secondary {
+  margin-top: 0.5em;
+}
+
+.modal-content {
+  color: black;
+}
+
+.modal-dialog {
+  max-width: 50%;
+}
+
+.modal-body {
+  padding-right: 2.5em;
+  padding-left: 2.5em;
+}
+
 
 /* 404 Style */
 
