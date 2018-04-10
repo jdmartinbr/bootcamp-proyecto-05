@@ -14,10 +14,21 @@
             <a class="nav-item nav-link" href="#">Ofertas</a>
             <a class="nav-item nav-link" href="#">¿Quiénes somos?</a>
             <a class="nav-item nav-link" href="#">¿Dónde estamos?</a>
-
+            {{#if isUser}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Hola {{isUser}}</a>
+                    <div class="dropdown-menu">
+                        {{#if isAdmin}}
+                            <a class="dropdown-item" href="/admin">Admin panel</a>
+                        {{/if}}
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </li>
+            {{/if}}
+            {{#unless isUser}}
                 <a class="nav-item nav-link" href="/login">Login</a>
                 <a class="nav-item nav-link" href="/registro">Registro</a>
-
+            {{/unless}}
             <div class="d-flex justify-content-center navbar-brand d-lg-none">
                 <i class="mg-10 fab fa-facebook-f"></i>
                 <i class="mg-10 fab fa-twitter"></i>
